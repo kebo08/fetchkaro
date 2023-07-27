@@ -124,4 +124,4 @@ async def download_xlsx(url: str, range: str):
         else:
             return {"custome_error":"Input format or range is wrong."}
     
-    return {"found_data":sorted(data,key=lambda x: (str(x["Roll Number"])+x["Sub Code"])),"not_found_data":ndata}
+    return {"found_data":sorted(data,key=lambda x: (str(x["Roll Number"])+x["Sub Code"])),"not_found_data":set(ndata)}
