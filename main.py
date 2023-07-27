@@ -31,8 +31,10 @@ def multiThread(url,x):
     pageSoup = soup(requests.post(url, {"mbstatus" : "SEARCH", "htno" : x}, verify = False, allow_redirects = True).text, "html.parser")
     try:
         if(pageSoup.findAll("h1")[0].text == "HTTP Status 500 – Internal Server Error"):
+            ndata.append(x)
             return False
         if pageSoup.find("div", {"id":"main-message"}).findAll("span")[0].text == "Your connection was interrupted":
+            ndata.append(x)
             return False
     except:
         pass
@@ -81,9 +83,11 @@ def multiThread(url,x):
         elif "The Hall Ticket Number" == pageSoup.find("table",{"id":"AutoNumber1"}).findAll("b")[1].text[9:31]:
             return True
         else:
+            ndata.append(x)
             return False
         return True
     except Exception as e:
+        ndata.append(x)
         return False
 
 def multiThreadCall(Url,st,en):
