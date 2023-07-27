@@ -90,7 +90,7 @@ def multiThread(url,x):
         ndata.append(x)
         return False
 
-def multiThreadCall(Url,st,en):
+async def multiThreadCall(Url,st,en):
     try:
         threads_k = []
         for i in range(st,en+1):
@@ -120,7 +120,7 @@ async def download_xlsx(url: str, range: str):
         if(len(r)>2):
             return {"custome_error":"Input format or range is wrong."}
         if(x<=y):
-            multiThreadCall(url,x,y)
+            await multiThreadCall(url,x,y)
         else:
             return {"custome_error":"Input format or range is wrong."}
     
