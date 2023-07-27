@@ -67,7 +67,7 @@ def multiThread(url,x):
                 Results2.append(Marks2)
             for roti in sorted(Results1):
                 temp={}
-                temp["Roll Number"] = x
+                temp["Roll Number"] = str(x)
                 if len(Results2[0])==3:
                     temp["CGPA"] = Results2[0][2]
                 temp["Sub Code"] = roti[0]
