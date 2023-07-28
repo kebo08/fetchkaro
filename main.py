@@ -110,9 +110,6 @@ async def multiThreadCall(data,ndata,Url,st,en):
 async def sample():
     return {"message" : random.choice(messages)}
 
-@app.post("/test")
-async def gabimaru(hi:str,hoi:str):
-    return {"message":hi+" "+hoi}
 
 @app.post("/download")
 async def download_xlsx(url: str, range: str):
