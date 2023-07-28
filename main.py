@@ -120,7 +120,7 @@ async def download_xlsx(url: str, range: str):
         if(len(r)>2):
             return {"custome_error":"Input format or range is wrong."}
         if(x<=y):
-            await multiThreadCall(url,x,y)
+            multiThreadCall(url,x,y)
         else:
             return {"custome_error":"Input format or range is wrong."}
     
