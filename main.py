@@ -25,9 +25,8 @@ app.add_middleware(
 )
 
 urllib3.disable_warnings()
-data = []
-ndata = []
-def multiThread(url,x): 
+
+def multiThread(data,ndata,url,x): 
     pageSoup = soup(requests.post(url, {"mbstatus" : "SEARCH", "htno" : x}, verify = False, allow_redirects = True).text, "html.parser")
     try:
         if(pageSoup.findAll("h1")[0].text == "HTTP Status 500 – Internal Server Error"):
@@ -67,7 +66,7 @@ def multiThread(url,x):
                 Results2.append(Marks2)
             for roti in sorted(Results1):
                 temp={}
-                temp["Roll Number"] = str(x)
+                temp["Roll Number"] = x
                 if len(Results2[0])==3:
                     temp["CGPA"] = Results2[0][2]
                 temp["Sub Code"] = roti[0]
@@ -90,29 +89,35 @@ def multiThread(url,x):
         ndata.append(x)
         return False
 
-def multiThreadCall(Url,st,en):
+async def multiThreadCall(data,ndata,Url,st,en):
     try:
         threads_k = []
         for i in range(st,en+1):
-            t = Thread(target = multiThread, args=(Url,i,))
+            t = Thread(target = multiThread, args=(data,ndata,Url,i,))
             threads_k.append(t)
             t.start()
         for t in threads_k:
             t.join()
+        # for i in range(st,en+1):
+        #     multiThread(Url,i)
     except Exception as e:
         print(e)
         print("Intiating Threads Again!!!")
-        Thread(target = multiThreadCall, args=(st,en)).start()
+        Thread(target = multiThreadCall, args=(data,ndata,Url,st,en,)).start()
 
 
 @app.get("/")
 async def sample():
     return {"message" : random.choice(messages)}
 
+@app.post("/test")
+async def gabimaru(hi:str,hoi:str):
+    return {"message":hi+" "+hoi}
 
 @app.post("/download")
 async def download_xlsx(url: str, range: str):
-    
+    data = []
+    ndata = []
     for i in range.split(","):
         r=str(i).split("-")
         x=int(r[0])
@@ -120,7 +125,7 @@ async def download_xlsx(url: str, range: str):
         if(len(r)>2):
             return {"custome_error":"Input format or range is wrong."}
         if(x<=y):
-            multiThreadCall(url,x,y)
+            await multiThreadCall(data,ndata,url,x,y)
         else:
             return {"custome_error":"Input format or range is wrong."}
     
