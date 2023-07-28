@@ -27,8 +27,8 @@ app.add_middleware(
 urllib3.disable_warnings()
 data = []
 ndata = []
-def multiThread(url,x): 
-    pageSoup = soup(requests.post(url, {"mbstatus" : "SEARCH", "htno" : x}, verify = False, allow_redirects = True).text, "html.parser")
+async def multiThread(url,x): 
+    pageSoup = await soup(requests.post(url, {"mbstatus" : "SEARCH", "htno" : x}, verify = False, allow_redirects = True).text, "html.parser")
     try:
         if(pageSoup.findAll("h1")[0].text == "HTTP Status 500 – Internal Server Error"):
             ndata.append(x)
@@ -90,7 +90,7 @@ def multiThread(url,x):
         ndata.append(x)
         return False
 
-async def multiThreadCall(Url,st,en):
+def multiThreadCall(Url,st,en):
     try:
         threads_k = []
         for i in range(st,en+1):
