@@ -90,11 +90,11 @@ def multiThread(url,x):
         ndata.append(x)
         return False
 
-async def multiThreadCall(Url,st,en):
+def multiThreadCall(Url,st,en):
     try:
         threads_k = []
         for i in range(st,en+1):
-            t = await Thread(target = multiThread, args=(Url,i,))
+            t = Thread(target = multiThread, args=(Url,i,))
             threads_k.append(t)
             t.start()
         for t in threads_k:
